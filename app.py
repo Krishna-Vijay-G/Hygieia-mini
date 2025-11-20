@@ -171,6 +171,8 @@ def create_hygieia_models_app():
     
     return app
 
+app = create_hygieia_models_app() 
+
 if __name__ == '__main__':
     app = create_hygieia_models_app()
     print("Starting Hygieia Models Medical Diagnostics Site...")
