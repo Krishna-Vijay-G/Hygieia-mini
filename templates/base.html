@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hygieia mini{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('hygieia_models.static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="{{ url_for('hygieia_models.index') }}" class="logo">
+                    <img src="{{ url_for('hygieia_models.static', filename='hygieia_color.svg') }}" class="logo-img" alt="Hygieia Logo" style="width: 50px;">
+                    Hygieia mini
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('hygieia_models.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('hygieia_models.dermatology') }}">Skin Analysis</a></li>
+                        <li><a href="{{ url_for('hygieia_models.diabetes') }}">Diabetes Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div style="margin-bottom: 2rem;">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }}" 
+                                 style="background: {% if category == 'error' %}#f8d7da; color: #721c24;{% else %}#d4edda; color: #155724;{% endif %} padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <i class="fas fa-{% if category == 'error' %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <img class="logo-down" src="{{ url_for('hygieia_models.static', filename='hygieia_color.svg') }}" alt="Hygieia Logo" style="width: 300px; opacity: 0.7;">
+        </div>
+</div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="color: white; margin-bottom: 1rem; font-size: 1.2rem;">
+                        <i class="fas fa-heartbeat" style="color: white; margin-right: 0.5rem;"></i>
+                        Hygieia mini
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 1rem;">
+                        Advanced health analysis for early detection and prevention of skin conditions and diabetes.
+                    </p>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="https://t.me/arkhins" target="_blank" style="color: #8be3d8; font-size: 1.5rem; transition: color 0.3s ease;">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://github.com/Krishna-Vijay-G" target="_blank" style="color: #8be3d8; font-size: 1.5rem; transition: color 0.3s ease;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://mailto:krishnavijay.gkv@gmail.com/" target="_blank" style="color: #8be3d8; font-size: 1.5rem; transition: color 0.3s ease;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Services</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="{{ url_for('hygieia_models.dermatology') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;">
+                                <i class="fas fa-microscope" style="margin-right: 0.5rem; color: #6b46c1;"></i>
+                                Skin Condition Analysis
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="{{ url_for('hygieia_models.diabetes') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;">
+                                <i class="fas fa-tint" style="margin-right: 0.5rem; color: #8be3d8;"></i>
+                                Diabetes Risk Assessment
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Resources - (Sorry, under development)</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;">
+                                <i class="fas fa-book-medical" style="margin-right: 0.5rem;"></i>
+                                Health Guidelines
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;">
+                                <i class="fas fa-user-md" style="margin-right: 0.5rem;"></i>
+                                Find Healthcare Providers
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;">
+                                <i class="fas fa-question-circle" style="margin-right: 0.5rem;"></i>
+                                FAQ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <p style="color: rgba(255,255,255,0.8); margin: 0;">
+                        Built with<i class="fas fa-heart" style="color: #ff0000; margin: 0 0.5rem;"></i>by 
+                        <a href="#" target="_blank" style="color: #8be3d8; font-weight: bold; text-decoration: none;">
+                            Team Arkhins
+                        </a>
+                    </p>
+                    <p style="color: rgba(255,255,255,0.6); margin: 0; font-size: 0.9rem;">
+                        © There is no Copyright, Feel free to use and develop.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 10px; margin-top: 1rem;">
+                    <h4 style="color: white; margin-bottom: 1rem; font-size: 1rem;">
+                        <i class="fas fa-exclamation-triangle" style="color: white; margin-right: 0.5rem;"></i>
+                        Important Medical Disclaimer
+                    </h4>
+                    <p style="color: rgba(255,255,255,0.8); line-height: 1.6; font-size: 0.9rem; margin: 0;">
+                        This health analysis tool is for <strong>educational and informational purposes only</strong>. 
+                        It should not be used as a substitute for professional medical advice, diagnosis, or treatment. 
+                        Always consult qualified healthcare providers for medical concerns. Early detection saves lives, but professional medical evaluation is essential.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('hygieia_models.static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

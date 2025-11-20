@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Skin Analysis - Hygieia mini{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <section class="hero">
+        <h1><i class="fas fa-microscope"></i> Skin Condition Analysis</h1>
+        <p>Upload a clear photo of your skin condition for analysis</p>
+    </section>
+
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data" id="dermatology-form">
+            <div class="form-group">
+                <label for="image">
+                    <i class="fas fa-camera"></i> Upload Skin Image
+                </label>
+                <div class="file-upload">
+                    <input type="file" id="image" name="image" accept="image/*" required>
+                    <div class="file-upload-label">
+                        <div class="file-upload-icon">📷</div>
+                        <div>
+                            <strong>Choose Image File</strong><br>
+                            <small>JPG, PNG, or other image formats • Drag & drop supported</small>
+                        </div>
+                    </div>
+                </div>
+                <small style="color: #666; margin-top: 0.5rem; display: block;">
+                    <i class="fas fa-info-circle"></i> 
+                    For best results, use clear, well-lit photos with the skin condition clearly visible
+                </small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-derma" style="width: 100%; font-size: 1.1rem;">
+                    <i class="fas fa-microscope"></i> Analyze Skin Condition
+                </button>
+            </div>
+
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Analyzing your image... This may take a few seconds.</p>
+            </div>
+        </form>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.7); padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center;">
+        <h3 style="color: #333; margin-bottom: 1rem;">
+            <i class="fas fa-lightbulb"></i> Tips for Better Results
+        </h3>
+        <ul style="list-style: none; padding-left: 0;">
+            <li style="margin-bottom: 0.5rem;"><i class="fas fa-check text-success"></i> Use good lighting (natural light works best)</li>
+            <li style="margin-bottom: 0.5rem;"><i class="fas fa-check text-success"></i> Keep the camera steady and in focus</li>
+            <li style="margin-bottom: 0.5rem;"><i class="fas fa-check text-success"></i> Show the affected area clearly</li>
+            <li style="margin-bottom: 0.5rem;"><i class="fas fa-check text-success"></i> Avoid shadows or reflections</li>
+            <li style="margin-bottom: 0.5rem;"><i class="fas fa-check text-success"></i> Use high resolution images when possible</li>
+        </ul>
+    </div>
+</div>
+
+<style>
+.text-success { color: #27ae60; }
+</style>
+{% endblock %}

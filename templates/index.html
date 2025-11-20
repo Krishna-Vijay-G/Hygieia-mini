@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Hygieia mini - Medical Diagnostics{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <section class="hero">
+        <h1>Hygieia mini</h1>
+        <p>Quick and easy health assessments using Advanced technology. Get instant results for skin conditions and diabetes risk evaluation.</p>
+    </section>
+
+    <section class="services">
+        <div class="service-card dermatology-card">
+            <div class="service-icon">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <h3>Skin Analysis</h3>
+            <p>Upload a photo of your skin condition and get an instant analysis. Identify potential skin conditions with confidence scores.</p>
+            <a href="{{ url_for('hygieia_models.dermatology') }}" class="btn btn-derma">
+                <i class="fas fa-camera"></i> Analyze Skin
+            </a>
+        </div>
+
+        <div class="service-card diabetes-card">
+            <div class="service-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <h3>Diabetes Risk Assessment</h3>
+            <p>Enter your health parameters to assess your diabetes risk. Quick evaluation based on medical indicators and lifestyle factors.</p>
+            <a href="{{ url_for('hygieia_models.diabetes') }}" class="btn btn-diabetes">
+                <i class="fas fa-calculator"></i> Check Risk
+            </a>
+        </div>
+    </section>
+
+    <section style="text-align: center; margin-top: 3rem;">
+        <h2 style="margin-bottom: 1rem; color: #333;">How It Works</h2>
+        <div class="services">
+            <div class="service-card" style="background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; color: #fca582; margin-bottom: 1rem;">1</div>
+                <h4>Upload or Input</h4>
+                <p style="color: #666;">Upload your skin image or enter your health parameters</p>
+            </div>
+            <div class="service-card" style="background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; color: #fca582; margin-bottom: 1rem;">2</div>
+                <h4>Analysis</h4>
+                <p style="color: #666;">Our models analyze your data using advanced algorithms</p>
+            </div>
+            <div class="service-card" style="background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 2rem; color: #fca582; margin-bottom: 1rem;">3</div>
+                <h4>Get Results</h4>
+                <p style="color: #666;">Receive instant results with confidence scores and recommendations</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="important-notice" style="background: rgba(255,255,255,0.3); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; margin-top: 2rem; text-align: center;">
+    <h3 style="color: #138677; margin-bottom: 1rem;">
+        <i class="fas fa-exclamation-triangle"></i> Important Notice
+    </h3>
+    <p style="color: #138677;">
+        This diagnostic tool is designed for educational and informational purposes only. 
+        Results should not be used as a substitute for professional medical advice, diagnosis, or treatment. 
+        Always seek the advice of your physician or other qualified healthcare provider with any questions 
+        you may have regarding a medical condition.
+    </p>
+</div>
+{% endblock %}

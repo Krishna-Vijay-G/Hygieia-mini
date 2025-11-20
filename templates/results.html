@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if result_type == 'dermatology' %}
+    Skin Analysis Results
+{% else %}
+    Diabetes Risk Results
+{% endif %} - Hygieia mini
+{% endblock %}
+
+{% block content %}
+<div class="result-container">
+    <div class="result-header">
+        {% if result_type == 'dermatology' %}
+            <h2><i class="fas fa-microscope"></i> Skin Analysis Results</h2>
+        {% else %}
+            <h2><i class="fas fa-tint"></i> Diabetes Risk Assessment Results</h2>
+        {% endif %}
+    </div>
+
+    <div class="result-content">
+        {% if result_type == 'dermatology' %}
+            <div class="result-image">
+                <img src="{{ url_for('hygieia_models.uploaded_file', filename=image_filename) }}" alt="Analyzed skin image">
+                <p style="color: #666; margin-top: 1rem;">Uploaded Image</p>
+            </div>
+        {% else %}
+            <!-- Hygieia Logo for Diabetes Results -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="{{ url_for('hygieia_models.static', filename='hygieia_color.svg') }}" alt="Hygieia Logo" style="width: 300px; opacity: 0.8;">
+            </div>
+        {% endif %}
+
+        <div class="result-details">
+            {% if result_type == 'dermatology' %}
+                <h3 style="color: #e74c3c;">{{ prediction.condition }}</h3>
+                
+                <div style="margin: 1.5rem 0;">
+                    <strong>Confidence Level</strong>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" data-confidence="{{ (prediction.confidence * 100)|round(1) }}" style="width: 0%;">
+                            {{ (prediction.confidence * 100)|round(1) }}%
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong>Risk Level: </strong>
+                    <span class="risk-badge risk-{{ prediction.risk_level.lower() }}">
+                        {{ prediction.risk_level }}
+                    </span>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-top: 2rem;">
+                    <h4 style="color: #333; margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> What This Means
+                    </h4>
+                    {% if prediction.risk_level == 'High' %}
+                        <p style="color: #721c24;">
+                            This condition requires professional medical attention. Please consult a dermatologist or healthcare provider as soon as possible.
+                        </p>
+                    {% elif prediction.risk_level == 'Moderate' %}
+                        <p style="color: #856404;">
+                            This condition should be monitored and may require professional evaluation. Consider scheduling an appointment with a healthcare provider.
+                        </p>
+                    {% else %}
+                        <p style="color: #155724;">
+                            This appears to be a benign condition, but monitoring is still recommended. Consult a healthcare provider if you notice changes.
+                        </p>
+                    {% endif %}
+                </div>
+
+                {% if prediction.recommendations %}
+                <div style="background: #e8f4f8; padding: 1.5rem; border-radius: 10px; margin-top: 2rem; border-left: 4px solid #3498db;">
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">
+                        <i class="fas fa-clipboard-list"></i> Recommended Actions
+                    </h4>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        {% for rec in prediction.recommendations %}
+                            <li style="margin-bottom: 0.5rem; color: #34495e;">{{ rec }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Diabetes Results (using main project's predictor output) -->
+                {% set rl = prediction.get('risk_level', prediction.get('risk_level', 'Low')) %}
+                <h3 style="color: #3498db;" class="" >
+                    {% if rl == 'High' %}
+                        <span style="color: #c0392b;">High Diabetes Risk</span>
+                    {% elif rl == 'Medium' %}
+                        <span style="color: #d68910;">Moderate Diabetes Risk</span>
+                    {% else %}
+                        <span style="color: #27ae60;">Low Diabetes Risk</span>
+                    {% endif %}
+                </h3>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong>Confidence Level</strong>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" data-confidence="{{ (prediction['confidence'] * 100)|round(1) }}" style="width: 0%;">
+                            {{ (prediction['confidence'] * 100)|round(1) }}%
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong>Risk Level: </strong>
+                    <span class="risk-badge {% if rl == 'High' %}risk-high{% elif rl == 'Medium' %}risk-moderate{% else %}risk-low{% endif %}">
+                        {% if rl == 'High' %}High{% elif rl == 'Medium' %}Moderate{% else %}Low{% endif %}
+                    </span>
+                </div>
+
+                {% if prediction.get('risk_factors') %}
+                <div style="margin-top:1rem;">
+                    <strong>Risk Factors Identified:</strong>
+                    <ul style="margin-top:0.5rem; padding-left: 20px;">
+                        {% for rf in prediction.get('risk_factors') %}
+                            <li>{{ rf }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-top: 2rem;">
+                    <h4 style="color: #333; margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> What This Means
+                    </h4>
+                    {% if rl == 'High' %}
+                        <p style="color: #721c24;">
+                            Based on your symptoms, you may be at higher risk for diabetes. Please consult with a healthcare provider for proper testing and evaluation (HbA1c, fasting glucose test, etc.).
+                        </p>
+                    {% elif rl == 'Medium' %}
+                        <p style="color: #856404;">
+                            Your symptoms suggest a moderate risk for diabetes. It's recommended to monitor your health and consider consulting with a healthcare provider for testing.
+                        </p>
+                    {% else %}
+                        <p style="color: #155724;">
+                            Your current symptoms suggest lower diabetes risk. Continue maintaining a healthy lifestyle and regular check-ups.
+                        </p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+        {% if result_type == 'dermatology' %}
+            <a href="{{ url_for('hygieia_models.dermatology') }}" class="btn btn-derma" style="margin: 0.5rem;">
+                <i class="fas fa-camera"></i> Analyze Another Image
+            </a>
+        {% else %}
+            <a href="{{ url_for('hygieia_models.diabetes') }}" class="btn btn-diabetes" style="margin: 0.5rem;">
+                <i class="fas fa-calculator"></i> New Assessment
+            </a>
+        {% endif %}
+        <a href="{{ url_for('hygieia_models.index') }}" class="btn" style="margin: 0.5rem;">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Medical Disclaimer -->
+<div class="important-notice" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; margin-top: 2rem; text-align: center;">
+    <h3 style="color: #138677; margin-bottom: 1rem;">
+        <i class="fas fa-exclamation-triangle"></i> Important Medical Disclaimer
+    </h3>
+    <p style="color: #138677; line-height: 1.6;">
+        This analysis is provided for informational and educational purposes only. 
+        It should not be used as a substitute for professional medical advice, diagnosis, or treatment. 
+        Always seek the advice of your physician or other qualified healthcare provider with any questions 
+        you may have regarding a medical condition. Never disregard professional medical advice or delay 
+        in seeking it because of something you have read here.
+    </p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Animate confidence bar on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Primary simple-site behavior: animate .confidence-fill elements
+    document.querySelectorAll('.confidence-fill').forEach(el => {
+        try {
+            const confidence = parseFloat(el.getAttribute('data-confidence')) || 0;
+            el.style.transition = 'width 1.8s ease-in-out';
+            // Set width immediately (fallback) then animate to final width
+            el.style.width = confidence + '%';
+        } catch (e) {
+            // ignore
+        }
+    });
+
+    // Also support main site's markup (.confidence-bar with data-confidence)
+    document.querySelectorAll('.confidence-bar').forEach(container => {
+        try {
+            // prefer inner progress bar element if present
+            let target = container.querySelector('.progress-bar') || container.querySelector('.confidence-fill');
+            const data = container.getAttribute('data-confidence') || (target && target.getAttribute('data-confidence'));
+            const confidence = parseFloat(data) || 0;
+            if (target) {
+                target.style.transition = 'width 1.8s ease-in-out';
+                target.style.width = confidence + '%';
+            }
+        } catch (e) {
+            // ignore
+        }
+    });
+});
+</script>
+{% endblock %}
